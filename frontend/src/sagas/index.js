@@ -5,7 +5,6 @@ import {
   watchEditReminder,
   watchNewReminder,
   watchSubmitReminder,
-  initCalendar,
 } from './ui/reminder';
 
 /**
@@ -45,12 +44,10 @@ function* keepAlive(...sagas) {
 }
 
 export default function* rootSaga() {
-
   const sagas = [
     watchNewReminder,
     watchEditReminder,
     watchSubmitReminder,
-    initCalendar,
   ];
   if (!IS_PRODUCTION) {
     sagas.unshift(watchAndLog);

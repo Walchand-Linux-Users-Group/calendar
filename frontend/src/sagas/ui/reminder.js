@@ -3,7 +3,7 @@ import { apply, call, put, takeEvery } from 'redux-saga/effects';
 import { setDateReminder } from '../../actions/dates';
 import { setReminder } from '../../actions/reminders';
 import * as reminderUIActions from '../../actions/ui/reminder';
-import { dateTimeStringsToMillis, DATE_FORMAT,getDisplayTimeFromMillis } from '../../helpers/calendar';
+import { dateTimeStringsToMillis, DATE_FORMAT } from '../../helpers/calendar';
 import { DEFAULT_COLOR } from '../../helpers/colors';
 import { generateUUID } from '../../helpers/uuid';
 import Axios from 'axios';
@@ -80,38 +80,6 @@ export function* submitReminder(action) {
   })
 
   console.log(reminderToSet);
-}
-
-export function* initReminder(reminder){
-
-  const reminderToSet = {
-    id: reminder.id,
-    event_type: reminder.event_type,
-    color: reminder.color,
-    dateTime: reminder.dateTime,
-    platform: reminder.platform,
-    topic: reminder.topic,
-  };
-
-  const dateReminder = { date: getDisplayTimeFromMillis(reminder.dateTime).date, reminderId: reminderToSet.id };
-
-  yield put(setReminder(reminderToSet));
-  yield put(setDateReminder(dateReminder));
-
-}
-
-export function* initCalendar() {
-
-  var MinDateTime = 0;
-  var MaxDateTime = 1000;
-
-  Axios.post("http://localhost:5000/api/get_remainder",{min: MinDateTime, max: MaxDateTime}).then(function (response) {
-
-    console.log(response);
-
-    response.forEach(initReminder);
-  });
-
 }
 
 export function* watchNewReminder() {

@@ -62,14 +62,8 @@ class ReminderForm extends Component {
   };
 
   handleSubmit = (values) => {
-    var idVal = this.props.reminder.id;
-
-    if(values.init!=null){
-      idVal = values.id;
-    }
-
     this.props.onSubmit({
-      id: idVal,
+      id: this.props.reminder.id,
       event_type: values.event_type,
       color: values.color,
       topic: values.topic,
