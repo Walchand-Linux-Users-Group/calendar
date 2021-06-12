@@ -4,7 +4,7 @@ var cors = require('cors');
 var mysql = require('mysql2/promise');
 
 var app = express();
-app.use(cors());
+app.use(cors({ credentials: true }))
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -91,6 +91,20 @@ app.get('/api/getuuid', async function (req, res) {
             res.end('INSERTED');
         }
 });
+
+app.post('/api/get_remainder', async function (req, res) {
+
+    var body = req.body;
+
+    var q = "SELECT * FROM remainders WHERE dateTime >= " + body.min + " AND dateTime <= "+ body.max + ";";
+    console.log(q);
+
+    var out = await con.query(q);
+
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    res.end(JSON.stringify(out[0]));
+    // console.log(JSON.stringify(out[0]));
+})
 
 var server = app.listen(5000, function () {
     var host = server.address().address
